@@ -19,21 +19,21 @@
 
 <div id="computerList">
     <!-- 電腦列表 -->
-    <div class="computer">電腦編號 1 <button onclick="borrowComputer(1)">借出</button><span class="status"></span></div>
-    <div class="computer">電腦編號 2 <button onclick="borrowComputer(2)">借出</button><span class="status"></span></div>
-    <div class="computer">電腦編號 3 <button onclick="borrowComputer(3)">借出</button><span class="status"></span></div>
-    <div class="computer">電腦編號 4 <button onclick="borrowComputer(4)">借出</button><span class="status"></span></div>
-    <div class="computer">電腦編號 5 <button onclick="borrowComputer(5)">借出</button><span class="status"></span></div>
-    <div class="computer">電腦編號 6 <button onclick="borrowComputer(6)">借出</button><span class="status"></span></div>
-    <div class="computer">電腦編號 7 <button onclick="borrowComputer(7)">借出</button><span class="status"></span></div>
-    <div class="computer">電腦編號 8 <button onclick="borrowComputer(8)">借出</button><span class="status"></span></div>
-    <div class="computer">電腦編號 9 <button onclick="borrowComputer(9)">借出</button><span class="status"></span></div>
-    <div class="computer">電腦編號 10 <button onclick="borrowComputer(10)">借出</button><span class="status"></span></div>
-    <div class="computer">電腦編號 11 <button onclick="borrowComputer(11)">借出</button><span class="status"></span></div>
-    <div class="computer">電腦編號 12 <button onclick="borrowComputer(12)">借出</button><span class="status"></span></div>
-    <div class="computer">電腦編號 13 <button onclick="borrowComputer(13)">借出</button><span class="status"></span></div>
-    <div class="computer">電腦編號 14 <button onclick="borrowComputer(14)">借出</button><span class="status"></span></div>
-    <div class="computer">電腦編號 15 <button onclick="borrowComputer(15)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 1 <button onclick="borrowComputer(1)">借出</button><button onclick="returnComputer(1)" style="display:none;">歸還</button><span class="status"></span></div>
+    <div class="computer">電腦編號 2 <button onclick="borrowComputer(2)">借出</button><button onclick="returnComputer(2)" style="display:none;">歸還</button><span class="status"></span></div>
+    <div class="computer">電腦編號 3 <button onclick="borrowComputer(3)">借出</button><button onclick="returnComputer(3)" style="display:none;">歸還</button><span class="status"></span></div>
+    <div class="computer">電腦編號 4 <button onclick="borrowComputer(4)">借出</button><button onclick="returnComputer(4)" style="display:none;">歸還</button><span class="status"></span></div>
+    <div class="computer">電腦編號 5 <button onclick="borrowComputer(5)">借出</button><button onclick="returnComputer(5)" style="display:none;">歸還</button><span class="status"></span></div>
+    <div class="computer">電腦編號 6 <button onclick="borrowComputer(6)">借出</button><button onclick="returnComputer(6)" style="display:none;">歸還</button><span class="status"></span></div>
+    <div class="computer">電腦編號 7 <button onclick="borrowComputer(7)">借出</button><button onclick="returnComputer(7)" style="display:none;">歸還</button><span class="status"></span></div>
+    <div class="computer">電腦編號 8 <button onclick="borrowComputer(8)">借出</button><button onclick="returnComputer(8)" style="display:none;">歸還</button><span class="status"></span></div>
+    <div class="computer">電腦編號 9 <button onclick="borrowComputer(9)">借出</button><button onclick="returnComputer(9)" style="display:none;">歸還</button><span class="status"></span></div>
+    <div class="computer">電腦編號 10 <button onclick="borrowComputer(10)">借出</button><button onclick="returnComputer(10)" style="display:none;">歸還</button><span class="status"></span></div>
+    <div class="computer">電腦編號 11 <button onclick="borrowComputer(11)">借出</button><button onclick="returnComputer(11)" style="display:none;">歸還</button><span class="status"></span></div>
+    <div class="computer">電腦編號 12 <button onclick="borrowComputer(12)">借出</button><button onclick="returnComputer(12)" style="display:none;">歸還</button><span class="status"></span></div>
+    <div class="computer">電腦編號 13 <button onclick="borrowComputer(13)">借出</button><button onclick="returnComputer(13)" style="display:none;">歸還</button><span class="status"></span></div>
+    <div class="computer">電腦編號 14 <button onclick="borrowComputer(14)">借出</button><button onclick="returnComputer(14)" style="display:none;">歸還</button><span class="status"></span></div>
+    <div class="computer">電腦編號 15 <button onclick="borrowComputer(15)">借出</button><button onclick="returnComputer(15)" style="display:none;">歸還</button><span class="status"></span></div>
 </div>
 
 <button onclick="toggleLogin()">登入</button>
@@ -70,10 +70,26 @@
 
         document.querySelector(`.computer:nth-child(${id}) .status`).textContent = ' 已借出';
         document.querySelector(`.computer:nth-child(${id}) .status`).classList.add('borrowed');
+        document.querySelector(`.computer:nth-child(${id}) button:nth-child(2)`).style.display = 'inline'; // 顯示歸還按鈕
+        document.querySelector(`.computer:nth-child(${id}) button:nth-child(1)`).style.display = 'none'; // 隱藏借出按鈕
 
         if (isLoggedIn) {
             updateRecordList();
         }
+    }
+
+    function returnComputer(id) {
+        if (!borrowedComputers[id]) {
+            alert('此電腦尚未借出');
+            return;
+        }
+
+        delete borrowedComputers[id];
+
+        document.querySelector(`.computer:nth-child(${id}) .status`).textContent = '';
+        document.querySelector(`.computer:nth-child(${id}) .status`).classList.remove('borrowed');
+        document.querySelector(`.computer:nth-child(${id}) button:nth-child(1)`).style.display = 'inline'; // 顯示借出按鈕
+        document.querySelector(`.computer:nth-child(${id}) button:nth-child(2)`).style.display = 'none'; // 隱藏歸還按鈕
     }
 
     function toggleLogin() {
