@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>電腦借用系統</title>
+    <h4>不用登入就可以借</h4>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .computer { margin: 10px 0; }
+        .borrowed { color: red; }
+        #loginForm { display: none; }
+        #record { display: none; }
+    </style>
+</head>
+<body>
+
+<h1>電腦借用系統</h1>
+
+<div id="computerList">
+    <!-- 電腦列表 -->
+    <div class="computer">電腦編號 1 <button onclick="borrowComputer(1)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 2 <button onclick="borrowComputer(2)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 3 <button onclick="borrowComputer(3)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 4 <button onclick="borrowComputer(4)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 5 <button onclick="borrowComputer(5)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 6 <button onclick="borrowComputer(6)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 7 <button onclick="borrowComputer(7)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 8 <button onclick="borrowComputer(8)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 9 <button onclick="borrowComputer(9)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 10 <button onclick="borrowComputer(10)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 11 <button onclick="borrowComputer(11)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 12 <button onclick="borrowComputer(12)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 13 <button onclick="borrowComputer(13)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 14 <button onclick="borrowComputer(14)">借出</button><span class="status"></span></div>
+    <div class="computer">電腦編號 15 <button onclick="borrowComputer(15)">借出</button><span class="status"></span></div>
+</div>
+
+<button onclick="toggleLogin()">登入</button>
+<div id="loginForm">
+    <h2>登入系統</h2>
+    <label for="username">帳號:</label>
+    <input type="text" id="username">
+    <label for="password">密碼:</label>
+    <input type="password" id="password">
+    <button onclick="login()">登入</button>
+</div>
+
+<div id="record">
+    <h2>借用紀錄</h2>
+    <ul id="recordList"></ul>
+</div>
+
+<script>
+    let borrowedComputers = {};
+    let isLoggedIn = false;
+
+    function borrowComputer(id) {
+        if (borrowedComputers[id]) {
+            alert('此電腦已借出');
+            return;
+        }
+        const className = prompt("請輸入班級:");
+        const seatNumber = prompt("請輸入座號:");
+        const name = prompt("請輸入姓名:");
+        const date = new Date().toLocaleDateString();
+        const time = new Date().toLocaleTimeString();
+
+        borrowedComputers[id] = { className, seatNumber, name, date, time };
+
+        document.querySelector(`.computer:nth-child(${id}) .status`).textContent = ' 已借出';
+        document.querySelector(`.computer:nth-child(${id}) .status`).classList.add('borrowed');
+
+        if (isLoggedIn) {
+            updateRecordList();
+        }
+    }
+
+    function toggleLogin() {
+        const loginForm = document.getElementById('loginForm');
+        loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function login() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        if (username === '20126' && password === '20129') {
+            isLoggedIn = true;
+            alert('登入成功');
+            updateRecordList();
+        } else {
+            alert('登入失敗');
+        }
+    }
+
+    function updateRecordList() {
+        const recordList = document.getElementById('recordList');
+        recordList.innerHTML = '';
+        for (const [id, record] of Object.entries(borrowedComputers)) {
+            const li = document.createElement('li');
+            li.textContent = `電腦編號 ${id} - 姓名: ${record.name}, 班級: ${record.className}, 座號: ${record.seatNumber}, 日期: ${record.date}, 時間: ${record.time}`;
+            recordList.appendChild(li);
+        }
+        document.getElementById('record').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
