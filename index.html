@@ -52,8 +52,12 @@
 </div>
 
 <script>
-    let borrowedComputers = {};
+    let borrowedComputers = JSON.parse(localStorage.getItem('borrowedComputers')) || {};
     let isLoggedIn = false;
+
+    function saveBorrowedComputers() {
+        localStorage.setItem('borrowedComputers', JSON.stringify(borrowedComputers));
+    }
 
     function borrowComputer(id) {
         if (borrowedComputers[id]) {
@@ -73,6 +77,8 @@
         document.querySelector(`.computer:nth-child(${id}) button:nth-child(2)`).style.display = 'inline'; // 顯示歸還按鈕
         document.querySelector(`.computer:nth-child(${id}) button:nth-child(1)`).style.display = 'none'; // 隱藏借出按鈕
 
+        saveBorrowedComputers(); // Save to localStorage
+
         if (isLoggedIn) {
             updateRecordList();
         }
@@ -90,6 +96,8 @@
         document.querySelector(`.computer:nth-child(${id}) .status`).classList.remove('borrowed');
         document.querySelector(`.computer:nth-child(${id}) button:nth-child(1)`).style.display = 'inline'; // 顯示借出按鈕
         document.querySelector(`.computer:nth-child(${id}) button:nth-child(2)`).style.display = 'none'; // 隱藏歸還按鈕
+
+        saveBorrowedComputers(); // Save to localStorage
     }
 
     function toggleLogin() {
@@ -120,6 +128,18 @@
         }
         document.getElementById('record').style.display = 'block';
     }
+
+    function loadBorrowedComputers() {
+        for (const id in borrowedComputers) {
+            document.querySelector(`.computer:nth-child(${id}) .status`).textContent = ' 已借出';
+            document.querySelector(`.computer:nth-child(${id}) .status`).classList.add('borrowed');
+            document.querySelector(`.computer:nth-child(${id}) button:nth-child(2)`).style.display = 'inline'; // 顯示歸還按鈕
+            document.querySelector(`.computer:nth-child(${id}) button:nth-child(1)`).style.display = 'none'; // 隱藏借出按鈕
+        }
+    }
+
+    // Load borrowed computers from localStorage when the page is loaded
+    window.onload = loadBorrowedComputers;
 </script>
 
 </body>
